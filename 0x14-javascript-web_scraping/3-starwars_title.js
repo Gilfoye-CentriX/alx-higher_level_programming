@@ -1,14 +1,15 @@
 #!/usr/bin/node
-// script that prints the title of a Star Wars movie where the e9pisode number matches a given integer.
+// Prints the title of a Star Wars movie where the episode number
+// matches the given integer
 
-const req = require('request');
-const episode = process.argv[2];
-const url = 'http://swapi.co/api/films/' + episode;
+const request = require('request');
+const argv = process.argv;
+let url = 'http://swapi.co/api/films/';
 
-req(url, function (error, response, body) {
-  if (error) {
-    console.log(error);
-  } else {
-    console.log(JSON.parse(body).title);
+request(url + argv[2], function (err, res, body) {
+  if (err) {
+    console.log(err);
   }
+  let json = JSON.parse(body);
+  console.log(json.title);
 });

@@ -1,17 +1,24 @@
 #!/usr/bin/node
-// script that gets the contents of a webpage and stores it in a file.
+// Computes the number of tasks completed by user id from
+// jsonplaceholder.typicode.com API
 
+const request = require('request');
 const url = process.argv[2];
-const file = process.argv[3];
-const req = require('request');
-const fileStream = require('fs');
 
-req(url, function (error, response, body) {
-  if (error) {
-    console.log(error);
-  } else {
-    fileStream.writeFile(file, body, 'utf-8', (error) => {
-      if (error) console.log(error);
-    });
+request(url, function (err, res, body) {
+  if (err) {
+    console.log(err);
   }
+  let tasks = JSON.parse(body);
+  let obj = {};
+  for (let task of tasks) {
+    if (task.completed === true) {
+      if (obj[task.userId] === undefined) {
+        obj[task.userId] = 1;
+      } else {
+        obj[task.userId]++;
+      }
+    }
+  }
+  console.log(obj);
 });
